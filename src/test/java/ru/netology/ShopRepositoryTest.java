@@ -24,7 +24,7 @@ class ShopRepositoryTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenIdNull() {
+    public void shouldThrowExceptionWhenRemoveByIdNull() {
         ShopRepository shopRepository = new ShopRepository();
         shopRepository.add(product1);
         shopRepository.add(product2);
@@ -32,6 +32,30 @@ class ShopRepositoryTest {
 
         Assertions.assertThrows(NotFoundException.class, () -> {
             shopRepository.remove(4);
+        });
+    }
+
+    @Test
+    public void shouldAddProduct() {
+        ShopRepository shopRepository = new ShopRepository();
+        shopRepository.add(product1);
+        shopRepository.add(product2);
+        shopRepository.add(product3);
+
+        Product[] expected = {product1, product2, product3};
+        Product[] actual = shopRepository.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenAddExistingId() {
+        ShopRepository shopRepository = new ShopRepository();
+        shopRepository.add(product1);
+        shopRepository.add(product2);
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {
+            shopRepository.add(product2);
         });
     }
 }

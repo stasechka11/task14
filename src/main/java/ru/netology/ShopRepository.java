@@ -12,6 +12,12 @@ public class ShopRepository {
      * но с добавлением нового элемента в конец
      */
     private Product[] addToArray(Product[] current, Product product) {
+        int id = product.getId();
+        if (findById(id) != null) {
+            throw new AlreadyExistsException(
+                    "Element with id: " + id + " already exists"
+            );
+        }
         Product[] tmp = new Product[current.length + 1];
         for (int i = 0; i < current.length; i++) {
             tmp[i] = current[i];
@@ -53,9 +59,9 @@ public class ShopRepository {
 
     public Product findById(int id) {
         for (Product product : products) {
-            if (product.getId() == id){
-            return product;
-        }
+            if (product.getId() == id) {
+                return product;
+            }
         }
         return null;
     }
